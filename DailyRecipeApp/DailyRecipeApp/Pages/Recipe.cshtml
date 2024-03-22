@@ -1,0 +1,41 @@
+﻿@page "/Recipes"
+@model DailyRecipeApp.Pages.RecipeModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipes</title>
+
+</head>
+<body>
+    <div class="text-center mt-5">
+        <button id="loadRecipeBtn" class="btn btn-primary btn-lg">Load Recipe</button>
+    </div>
+
+    <div class="mt-3 text-center">
+        <h2 id="recipeTitle"></h2>
+        <img id="recipeImage" alt="Recipe image" style="display:none; max-width:100%; height:auto;">
+        <p id="readyIn" class="mt-2"></p>
+        <a id="recipeUrl" href="" target="_blank" style="display:none;"></a>
+    </div>
+
+    @section Scripts {
+        <script>
+            document.getElementById("loadRecipeBtn").addEventListener("click", function () {
+                fetch('?handler=Recipe')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('recipeTitle').innerText = data.title;
+                        document.getElementById('recipeImage').src = data.image;
+                        document.getElementById('recipeImage').style.display = 'inline';
+                        document.getElementById('recipeUrl').href = data.sourceUrl;
+                        document.getElementById('recipeUrl').innerText = 'View Full Recipe';
+                        document.getElementById('recipeUrl').style.display = 'inline';
+                        document.getElementById('readyIn').innerText = 'Ready in ' + data.readyInMinutes + ' minutes';
+                    });
+            });
+        </script>
+    }
+</body>
+</html>
